@@ -13,11 +13,9 @@
   <div class="container-fluid">
     <div class="jumbotron text-center">
       <h1>Minneapolis Police Use of Force Dashboard</h1>
-      {% for post in posts %}
-      <a href="#">
-          <h2>{{ post['title'] }}</h2>
-      </a>
-      <span class="badge badge-primary">{{ post['created'] }}</span>
+      {% for x in mnpddata.Year %}
+          <h2>{{ x }}</h2>
+      <!-- <span class="badge badge-primary">{{ post['created'] }}</span> -->
       <hr>
     {% endfor %}
     </div>
