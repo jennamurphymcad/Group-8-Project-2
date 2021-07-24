@@ -3,11 +3,8 @@ from flask import Flask, render_template, jsonify
 import get_data
 
 
-
 # Database Setup
 engine = create_engine("sqlite:///MNPDUseofForce.sqlite")
-
-
 
 
 # Flask Setup
@@ -29,7 +26,13 @@ def data():
     data = engine.execute("SELECT Neighborhood, Count(PoliceUseOfForceID) FROM MNPD_tbl GROUP BY Neighborhood")
     Map_Data = [(Neighborhood, int(Force_Use)) for Neighborhood, Force_Use in list(data)]
 
-    Data = {"Problem_List": Problem_List, "Map_Data": Map_Data}
+    data = engine.execute("SELECT Sex, Count(PoliceUseOfForceID) FROM MNPD_tbl GROUP BY Sex")
+    Sex_Data = [(Sex, int(Force_Use)) for Sex, Force_Use in list(data)]
+
+    data = engine.execute("SELECT Race, Count(PoliceUseOfForceID) FROM MNPD_tbl GROUP BY Race")
+    Race_Data = [(Race, int(Force_Use)) for Race, Force_Use in list(data)]
+
+    Data = {"Problem_List": Problem_List, "Map_Data": Map_Data, "Sex_Data": Sex_Data, "Race_Data": Race_Data}
 
     return jsonify(Data)
 

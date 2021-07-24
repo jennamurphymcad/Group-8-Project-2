@@ -1,5 +1,4 @@
-
-
-d3.json("/data/users.json", function(data) {
+// d3.json(url).then(function(data)
+d3.json("http://127.0.0.1:5000/data").then(function(data) {
     console.log(data);
 });
