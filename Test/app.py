@@ -1,5 +1,8 @@
 from sqlalchemy import create_engine
 from flask import Flask, render_template, jsonify
+import get_data
+
+
 
 # Database Setup
 engine = create_engine("sqlite:///MNPDUseofForce.sqlite")
@@ -17,6 +20,8 @@ def index():
 
 @app.route("/data")
 def data():
+
+    get_data.get_data()
     
     data = engine.execute("SELECT Year, Count(PoliceUseOfForceID) FROM MNPD_tbl GROUP BY Year")
     Problem_List = [(int(Year), int(Force_Use)) for Year, Force_Use in list(data)]
