@@ -5,22 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Police Use of Force: Minneapolis</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+  <title>Test</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="{{url_for('static', filename='logic.js')}}"></script>
 </head>
 
 <body>
-  <div class="container-fluid">
-    <div class="jumbotron text-center">
-      <h1>Minneapolis Police Use of Force Dashboard</h1>
-      {% for x in mnpddata.Year %}
-          <h2>{{ x }}</h2>
-      <!-- <span class="badge badge-primary">{{ post['created'] }}</span> -->
-      <hr>
-    {% endfor %}
-    </div>
+<div class="container text-center">
+    <h1 class="jumbotron">Minneapolis PD Use of Force Dashboard</h1>
+    
   </div>
-  </div>
+  
 </body>
 
 </html>
