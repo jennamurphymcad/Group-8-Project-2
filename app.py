@@ -20,7 +20,7 @@ def index():
     mnpddata = conn.execute('SELECT * FROM MNPDtbl').fetchall()
     
     conn.close()
-    return render_template('index.html')
+    return render_template('index.html', mnpddata=mnpddata)
     # return render_template('index.html', posts=posts)
     # return render_template('script.js')
 
