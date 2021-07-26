@@ -1,6 +1,5 @@
-h1 {
-    border: 2px #eee solid;
-    color: brown;
-    text-align: center;
-    padding: 10px;
+html, body, row, .map-container, #map /*, and all other map parent selectors*/ {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
 }
