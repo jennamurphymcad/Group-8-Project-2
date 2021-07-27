@@ -1,31 +1,56 @@
-var myMap = L.map("map", {
-  center: [45.52, -122.67],
-  zoom: 5
-});
 
-// Add a tile layer (the background map image) to our map
-// We use the addTo method to add objects to our map
-L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-  attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-  tileSize: 512,
-  maxZoom: 18,
-  zoomOffset: -1,
-  id: "mapbox/streets-v11",
-  accessToken: API_KEY
-}).addTo(myMap);
-
-// // Create a new marker
-// // Pass in some initial options, and then add it to the map using the addTo method
-// var marker = L.marker([45.52, -122.67], {
-//   draggable: true,
-//   title: "My First Marker"
-// }).addTo(myMap);
-
-// // Binding a pop-up to our marker
-// marker.bindPopup("Hello There!");
+// // d3.json(url).then(function(data)
+// d3.json("http://127.0.0.1:5000/data").then(function(data) {
+//     console.log(data);
+//     key = Object.keys(data);
+//     console.log(data.Map_Data);
+//     var node = document.createElement('p');
+//     var textnode = document.createTextNode(data.Map_Data);
+//     node.appendChild(textnode); 
+//     document.getElementById("test").appendChild(node);  
 
 
+ //get data pull, set up dropdown menu, and call the initial plot
+ function setup() {
+    d3.json("http://127.0.0.1:5000/data").then(function(data) {
+        console.log(data);
+        // key = Object.keys(data);
+        var neighborhood_list = data.Map_Data.map(d=>d[0]);
+        // console.log(data.Neighboorhood_Data);
 
-d3.json("http://127.0.0.1:5000/data").then(function(data) {
-    console.log(data);
-});
+   var innerContainer = document.querySelector('.well'),
+   // plotEl = innerContainer.querySelector('#bar'),
+   userSelector = innerContainer.querySelector('#selDataset');
+ 
+   function assignOptions(neighborhood, selector) {
+   for (var i = 0; i < neighborhood.length;  i++) {
+       if (neighborhood[i] !== null) {
+            var currentOption = document.createElement('option');
+            currentOption.text = neighborhood[i];
+            selector.appendChild(currentOption);
+       } else {
+           console.log("skipped neighborhood")
+       }
+     }
+   }
+ 
+   assignOptions(neighborhood_list, userSelector);
+//    initPlot(samples, metadata);
+   });
+ };
+ 
+ //call the set up function
+ setup();
+
+// update All plots and data when dropdown menu is changed
+function updatePlotly() {
+   
+      var dropdownMenu = d3.select("#selDataset");
+      // Assign the value of the dropdown menu option to a variable
+      var dataset = dropdownMenu.property("value");
+      console.log(dataset);
+
+  };
+  
+  //event listener for menu, run plot update when there is a change
+  d3.selectAll("#selDataset").on("change", updatePlotly);

@@ -32,6 +32,11 @@ def data():
     data = engine.execute("SELECT Race, Count(PoliceUseOfForceID) FROM MNPD_tbl GROUP BY Race")
     Race_Data = [(Race, int(Force_Use)) for Race, Force_Use in list(data)]
 
+    # data = engine.execute("SELECT DISTINCT Neighborhood FROM MNPD_tbl")
+    # Neighborhood_Data = [(Neighborhood) for Neighborhood in list(data)]
+
+    # Data = {"Problem_List": Problem_List, "Map_Data": Map_Data, "Sex_Data": Sex_Data, "Race_Data": Race_Data, "Neighborhood_data": Neighborhood_Data}
+
     Data = {"Problem_List": Problem_List, "Map_Data": Map_Data, "Sex_Data": Sex_Data, "Race_Data": Race_Data}
 
     return jsonify(Data)

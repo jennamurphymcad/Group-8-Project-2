@@ -50,3 +50,13 @@ html {
 h1 {
   text-align: center;
 }
+
+/* dropdown menu start */
+select#selDataset {
+  width: 100%;
+}
+
+
+/* dropdown menu end */
+
+
