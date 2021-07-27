@@ -8,7 +8,7 @@ engine = create_engine("sqlite:///MNPDUseofForce.sqlite")
 
 
 # Flask Setup
-app = Flask(__name__)
+app = Flask(__name__,template_folder='templates')
 
 @app.route("/")
 def index():
