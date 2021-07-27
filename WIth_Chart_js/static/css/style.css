@@ -57,5 +57,11 @@ h6  {
 } */
 
 
-
+/* dropdown menu start */
+select#selDataset {
+    width: 100%;
+  }
+  
+  
+  /* dropdown menu end */
 

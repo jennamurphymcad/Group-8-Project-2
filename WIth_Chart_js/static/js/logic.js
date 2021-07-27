@@ -1,5 +1,35 @@
+// START JENNA ADDITIONS FOR POPULAITNG MENU  1 of 2//
+function setup() {
+    d3.json("http://127.0.0.1:5000/data").then(function(data) {
+        console.log(data);
+        // key = Object.keys(data);
+        var neighborhood_list = data.Map_Data.map(d=>d[0]);
+        // console.log(data.Neighboorhood_Data);
 
+   var innerContainer = document.querySelector('.well'),
+   // plotEl = innerContainer.querySelector('#bar'),
+   userSelector = innerContainer.querySelector('#selDataset');
 
+   function assignOptions(neighborhood, selector) {
+   for (var i = 0; i < neighborhood.length;  i++) {
+       if (neighborhood[i] !== null) {
+            var currentOption = document.createElement('option');
+            currentOption.text = neighborhood[i];
+            selector.appendChild(currentOption);
+       } else {
+           console.log("skipped neighborhood")
+       }
+     }
+   }
+
+   assignOptions(neighborhood_list, userSelector);
+//    initPlot(samples, metadata);
+   });
+ };
+
+ //call the set up function
+ setup();
+// END JENNA ADDITIONS FOR POPULATING MENU 1 of 2///
 
 
 // d3.json("http://127.0.0.1:5000/data").then(function(data) {
@@ -424,3 +454,20 @@ var my3rdChart = new Chart(ctx, {
     }   
 });
 
+
+
+// START JENNA ADDITIONS FOR POPULAITNG MENU  2 of 2//
+
+// update All plots and data when dropdown menu is changed
+function updatePlotly() {
+
+      var dropdownMenu = d3.select("#selDataset");
+      // Assign the value of the dropdown menu option to a variable
+      var dataset = dropdownMenu.property("value");
+      console.log(dataset);
+};
+
+//event listener for menu, run plot update when there is a change
+d3.selectAll("#selDataset").on("change", updatePlotly); 
+
+// END JENNA ADDITIONS FOR POPULAITNG MENU  2 of 2//
