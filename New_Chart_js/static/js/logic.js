@@ -1,4 +1,4 @@
-var All_Data;
+
 var myChart;
 var myBestChart;
 var myOtherChart;
@@ -10,15 +10,26 @@ setup();
 function setup() {
     d3.json("http://127.0.0.1:5000/data").then(function(data) {
 
-        All_Data = data;
-
-        var neighborhood_list = data.Map_Data.map(d=>d[0]);
-        var initial_labels = data.N_CountbyYear["Minneapolis"][0];
-        var initial_values = data.N_CountbyYear["Minneapolis"][1];
         
-        myBestChart = CreateTimeSeries(initial_labels, initial_values);
-        myChart = CreateChart1();
-        myOtherChart = CreateChart2();
+
+        // Create initial dashboard view
+        var neighborhood_list = data.Map_Data.map(d=>d[0]);
+        var TS_initial_labels = data.N_CountbyYear["Minneapolis"][0];
+        var TS_initial_values = data.N_CountbyYear["Minneapolis"][1];
+        var P_initial_labels = data.N_CountbyProblem["Minneapolis"][0];
+        var P_initial_values = data.N_CountbyProblem["Minneapolis"][1];
+        var FT_initial_labels = data.N_CountbyForceType["Minneapolis"][0];
+        var FT_initial_values = data.N_CountbyForceType["Minneapolis"][1];
+        
+        
+        console.log(data.N_CountbyProblem["Minneapolis"]);
+        
+
+        myBestChart = CreateTimeSeries(TS_initial_labels, TS_initial_values);
+        console.log(myBestChart.config.data.datasets.data);
+        myOtherChart = CreateProblemChart(P_initial_labels,P_initial_values);
+        myChart = CreateForceTypeChart(FT_initial_labels, FT_initial_values);
+        
         
         var innerContainer = document.querySelector('.well'),
         // plotEl = innerContainer.querySelector('#bar'),
@@ -43,16 +54,34 @@ function setup() {
             var dropdownMenu = d3.select("#selDataset");
             // Assign the value of the dropdown menu option to a variable
             var dataset = dropdownMenu.property("value");
+            // Push selection to console
             console.log(dataset);
-            d3.json("http://127.0.0.1:5000/data").then(function(data) {
             
-                // var labels = data.N_CountbyYear[dataset][0];
-                var labels = data.N_CountbyYear[dataset][0];
-                var values = data.N_CountbyYear[dataset][1];
+            
+            // Select new data for time series plot
+            var labels = data.N_CountbyYear[dataset][0];
+            var values = data.N_CountbyYear[dataset][1];
+            // Destroy old chart per chart.js   
+            myBestChart.destroy();
+            // Call function to create new chart and pass new data
+            myBestChart = CreateTimeSeries(labels, values);
+
+            // Select new data for time series plot
+            var P_labels = data.N_CountbyProblem[dataset][0];
+            var P_values = data.N_CountbyProblem[dataset][1];
+            // Destroy old chart per chart.js   
+            myOtherChart.destroy();
+            // Call function to create new chart and pass new data
+            myOtherChart = CreateProblemChart(P_labels, P_values);
                 
-                myBestChart.destroy();
-                // updateTimeSeries(labels, values);
-            });
+            // Select new data for time series plot
+            var FT_labels = data.N_CountbyForceType[dataset][0];
+            var FT_values = data.N_CountbyForceType[dataset][1];
+            // Destroy old chart per chart.js   
+            myChart.destroy();
+            // Call function to create new chart and pass new data
+            myChart = CreateForceTypeChart(FT_labels, FT_values);
+            
         };
 
         d3.selectAll("#selDataset").on("change", updatePlotly);
@@ -71,85 +100,51 @@ function setup() {
 
 
 
-function CreateChart1() {
+function CreateForceTypeChart(labels, values) {
     var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    
+    var data = {
+            labels: labels,
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
+            label: "Number of Incidents",
+            axis: 'y',
+            data: values,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgb(54, 162, 235)',
+            borderWidth: 1
+    }]};
+    
+    var config = {
+        type: 'doughnut', data,
         options: {
-            scales: {
-                x: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-    // console.log(myChart);
-    return myChart
+            plugins: {
+                    legend: {
+                        display: true,
+                        position: "left",
+                        align: "left",
+                        labels: {
+                            color: 'rgb(255, 99, 132)'
+                        }
+                    }
+            },
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            // scales: {
+            //     y: [{
+            //         stacked: false, 
+            //         beginAtZero: true, 
+            //         ticks: {stepSize: 0, min: 0, autoSkip: false}
+                    
+            //     }]
+            // }
+        }         
+    };
+        
+    return new Chart(ctx, config);
+
 }
 
-function CreateChart2() {
-    var ctx = document.getElementById('myOtherChart').getContext('2d');
-    var myOtherChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
 
-    return myOtherChart
-}
 
 function CreateTimeSeries(labels, values)   {
     var ctx = document.getElementById('myBestChart').getContext('2d');
@@ -160,10 +155,17 @@ function CreateTimeSeries(labels, values)   {
                 datasets: [{
                     label: "Number of Incidents",
                     data: values,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
                     borderWidth: 1
                 }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
         }
         
@@ -171,30 +173,38 @@ function CreateTimeSeries(labels, values)   {
 
 }
 
-
-
-
-// // START JENNA ADDITIONS FOR POPULAITNG MENU  2 of 2//
-
-// // update All plots and data when dropdown menu is changed
-// function updatePlotly() {
-
-//     var dropdownMenu = d3.select("#selDataset");
-//     // Assign the value of the dropdown menu option to a variable
-//     var dataset = dropdownMenu.property("value");
-//     console.log(dataset);
-//     d3.json("http://127.0.0.1:5000/data").then(function(data) {
+function CreateProblemChart(labels, values)   {
+    var ctx = document.getElementById('myOtherChart').getContext('2d');
     
-//         // var labels = data.N_CountbyYear[dataset][0];
-//         var labels = data.N_CountbyYear[dataset][0];
-//         var values = data.N_CountbyYear[dataset][1];
-//         myOtherChart.destroy();
-//         myBestChart.destroy();
-//         // updateTimeSeries(labels, values);
-//     });
-// };
+    var data = {
+            labels: labels,
+            datasets: [{
+            label: "Number of Incidents",
+            axis: 'y',
+            data: values,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgb(54, 162, 235)',
+            borderWidth: 1
+    }]};
+    
+    var config = {
+        type: 'bar', data,
+        options: {
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            scales: {
+                y: [{
+                    stacked: false, 
+                    beginAtZero: true, 
+                    ticks: {stepSize: 0, min: 0, autoSkip: false}
+                    
+                }]
+            }
+        }         
+    };
+        
+    return new Chart(ctx, config);
 
-// //event listener for menu, run plot update when there is a change
-// d3.selectAll("#selDataset").on("change", updatePlotly); 
+}
 
-// // END JENNA ADDITIONS FOR POPULAITNG MENU  2 of 2//
+
