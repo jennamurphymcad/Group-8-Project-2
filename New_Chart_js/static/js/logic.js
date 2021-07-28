@@ -1,4 +1,12 @@
-// START JENNA ADDITIONS FOR POPULAITNG MENU  1 of 2//
+var All_Data;
+var myChart;
+var myBestChart;
+var myOtherChart;
+
+setup();
+
+
+
 function setup() {
     d3.json("http://127.0.0.1:5000/data").then(function(data) {
 
@@ -7,16 +15,49 @@ function setup() {
         var neighborhood_list = data.Map_Data.map(d=>d[0]);
         var initial_labels = data.N_CountbyYear["Minneapolis"][0];
         var initial_values = data.N_CountbyYear["Minneapolis"][1];
+        
+        myBestChart = CreateTimeSeries(initial_labels, initial_values);
+        myChart = CreateChart1();
+        myOtherChart = CreateChart2();
+        
+        var innerContainer = document.querySelector('.well'),
+        // plotEl = innerContainer.querySelector('#bar'),
+        userSelector = innerContainer.querySelector('#selDataset');
 
-        Initial_Charts()
-            myBestChart = CreateTimeSeries(initial_labels, initial_values);
-            console.log(myBestChart)
-            CreateChart1();
-            CreateChart2();
-            Drop_DOwn()
+        function assignOptions(neighborhood, selector) {
+            for (var i = 0; i < neighborhood.length;  i++) {
+                if (neighborhood[i] !== null) {
+                    var currentOption = document.createElement('option');
+                    currentOption.text = neighborhood[i];
+                    selector.appendChild(currentOption);
+                } else {
+                    console.log("skipped neighborhood")
+                }
+            }
+        }
+
+        assignOptions(neighborhood_list, userSelector);
+
+        function updatePlotly() {
+
+            var dropdownMenu = d3.select("#selDataset");
+            // Assign the value of the dropdown menu option to a variable
+            var dataset = dropdownMenu.property("value");
+            console.log(dataset);
+            d3.json("http://127.0.0.1:5000/data").then(function(data) {
+            
+                // var labels = data.N_CountbyYear[dataset][0];
+                var labels = data.N_CountbyYear[dataset][0];
+                var values = data.N_CountbyYear[dataset][1];
+                
+                myBestChart.destroy();
+                // updateTimeSeries(labels, values);
+            });
+        };
+
+        d3.selectAll("#selDataset").on("change", updatePlotly);
 
 
-        Updates_Charts()
 
 
 
@@ -25,14 +66,9 @@ function setup() {
     
 }
 
-var All_Data;
 
-var myChart;
-var myBestChart;
-var myOtherChart;
-setup();
-console.log(myBestChart);
-myBestChart.destroy();
+
+
 
 
 function CreateChart1() {
