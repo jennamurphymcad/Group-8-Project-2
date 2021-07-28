@@ -6,8 +6,8 @@ function setup() {
         var neighborhood_list = data.Map_Data.map(d=>d[0]);
         var initial_labels = data.N_CountbyYear["Minneapolis"][0];
         var initial_values = data.N_CountbyYear["Minneapolis"][1];
-        CreateTimeSeries(initial_labels,initial_values);
-        console.log(my3rdChart.data.datasets);
+        // CreateTimeSeries(initial_labels,initial_values);
+        
         
         // console.log(data.Neighboorhood_Data);
 
@@ -30,6 +30,9 @@ function setup() {
    assignOptions(neighborhood_list, userSelector);
 //    initPlot(samples, metadata);
    });
+
+//    return myBestChart
+
  };
 
  //call the set up function
@@ -127,15 +130,15 @@ var myOtherChart = new Chart(ctx, {
 //         }   
 //     });
 
-function CreateTimeSeries(labels, values)   {
-    var ctx = document.getElementById('my3rdChart').getContext('2d');
-    var config = {
+// function CreateTimeSeries(labels, values)   {
+    var ctx = document.getElementById('myBestChart').getContext('2d');
+    const config = {
             type: 'bar',
             data: {
-                labels: labels,
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                 datasets: [{
                     label: "Number of Incidents",
-                    data: values,
+                    data: [12, 19, 3, 5, 2, 3],
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgb(54, 162, 235)',
                     borderWidth: 1
@@ -143,29 +146,42 @@ function CreateTimeSeries(labels, values)   {
             }
         }
         
-    var my3rdChart = new Chart(ctx, config);
+    var myBestChart = new Chart(ctx, config);
 
-    return my3rdChart
+    // return my3rdChart;
     
+// }
+
+function updateTimeSeries(labels, values) {
+
+    // function destroyChart() {
+    //     my3rdChart.destroy();
+    //   }
+
+    // destroyChart();
+
+    CreateTimeSeries(labels, values);
+
 }
 
 
 // START JENNA ADDITIONS FOR POPULAITNG MENU  2 of 2//
 
 // update All plots and data when dropdown menu is changed
-function updatePlotly(my3rdChart) {
+function updatePlotly() {
 
     var dropdownMenu = d3.select("#selDataset");
     // Assign the value of the dropdown menu option to a variable
     var dataset = dropdownMenu.property("value");
     console.log(dataset);
-    d3.json("http://127.0.0.1:5000/data").then(function(data, my3rdChart) {
+    d3.json("http://127.0.0.1:5000/data").then(function(data) {
     
         // var labels = data.N_CountbyYear[dataset][0];
+        var labels = data.N_CountbyYear[dataset][0];
         var values = data.N_CountbyYear[dataset][1];
-        console.log(my3rdChart.data.datasets[1]);
-        my3rdChart.data.datasets[1] = values;
-        my3rdChart.update();
+        myOtherChart.destroy();
+        myBestChart.destroy();
+        // updateTimeSeries(labels, values);
     });
 };
 

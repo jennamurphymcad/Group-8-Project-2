@@ -1,0 +1,67 @@
+/* h1  {
+    color: rgba(0, 140, 255, 0.98)
+}
+
+h6  {
+    color: rgba(0, 140, 255, 0.98)
+}
+
+.container  {
+    background-color:  rgb(241, 241, 241);
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+
+.box {
+    min-height: 5px;
+    padding: 5px;
+    margin: 5px;
+    font-weight: 800;
+    border-radius: 5px;
+}
+
+.content {
+    min-height: 400px;
+    padding: 5px;
+    margin: 5px;
+    font-weight: 100;
+    color: black;
+    border-radius: 5px;
+}
+  
+.page-title {
+    background:  white;
+}
+
+
+  
+.main-content   {
+    background-color: white;
+}
+
+.sidebar-content {
+    background: white;
+    flex-flow: column;
+}
+    
+  
+.spacer {
+    display: hide;
+}
+
+.newbox {
+    border: black;
+    border-style: double;
+} */
+
+
+/* dropdown menu start */
+select#selDataset {
+    width: 100%;
+  }
+  
+  
+  /* dropdown menu end */
+
