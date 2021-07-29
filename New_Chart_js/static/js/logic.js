@@ -129,6 +129,10 @@ function CreateForceTypeChart(labels, values) {
         type: 'doughnut', data,
         options: {
             plugins: {
+                    title: {
+                        display: true,
+                        text: 'Use of Force Type'
+                    },
                     legend: {
                         display: true,
                         position: "left",
@@ -176,6 +180,12 @@ function CreateTimeSeries(labels, values)   {
                     y: {
                         beginAtZero: true
                     }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Police Use of Force Incidents by Year'
+                    }
                 }
             }
         }
@@ -201,6 +211,12 @@ function CreateProblemChart(labels, values)   {
     var config = {
         type: 'bar', data,
         options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Problem Type'
+                }
+            },
             maintainAspectRatio: false,
             indexAxis: 'y',
             scales: {
