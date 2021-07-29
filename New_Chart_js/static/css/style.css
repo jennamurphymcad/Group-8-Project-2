@@ -10,7 +10,7 @@ select#selDataset {
     min-height: 300px !important;
 } */
 .well {
-  min-height: 65px !important;
+  min-height: 60px !important;
   margin-top: 10px;
   background-color: #dbe9f5;
 }
