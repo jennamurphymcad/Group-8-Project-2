@@ -1,4 +1,5 @@
 /* dropdown menu start */
+
 select#selDataset {
     width: 100%;
 }
@@ -8,3 +9,29 @@ select#selDataset {
 /* canvas #myOtherChart   {
     min-height: 300px !important;
 } */
+.well {
+  min-height: 65px !important;
+  margin-top: 10px;
+  background-color: #dbe9f5;
+}
+.col-md-12 {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+h5 {
+  margin-top: 0px;
+}
+
+.jumbotron {
+  background-color:#337ab7;
+  color: white;
+  margin-bottom: 10px;
+  /* padding-top: 20px;
+  padding-bottom: 20px; */
+}
+
+div.panel-primary {
+  margin-top: 10px;
+}
+
