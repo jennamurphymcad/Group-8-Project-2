@@ -109,8 +109,19 @@ function CreateForceTypeChart(labels, values) {
             label: "Number of Incidents",
             axis: 'y',
             data: values,
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: [
+                'rgba(0, 178, 148, 0.5)',
+                'rgba(0, 188, 242, 0.5)',
+                'rgba(255, 241, 0, 0.5)',
+                'rgba(255, 140, 0, 0.5)',
+                'rgba(232, 17, 35, 0.5)',
+                'rgba(236, 0, 140, 0.5)',
+                'rgba(104, 33, 122, 0.5)',
+                'rgba(0, 24, 143, 0.5)',
+                'rgba(0, 158, 73, 0.5)',
+                'rgba(186, 216, 10, 0.5)'],
+
+            borderColor:  'rgba(0, 158, 73, 0.75)',
             borderWidth: 1
     }]};
     
@@ -123,7 +134,7 @@ function CreateForceTypeChart(labels, values) {
                         position: "left",
                         align: "left",
                         labels: {
-                            color: 'rgb(255, 99, 132)'
+                            // color: 'rgba(255, 99, 132, 0.2)',
                         }
                     }
             },
@@ -155,8 +166,8 @@ function CreateTimeSeries(labels, values)   {
                 datasets: [{
                     label: "Number of Incidents",
                     data: values,
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(255, 159, 64, 1)',
+                    backgroundColor: 'rgba(0, 188, 242, 0.5)',
+                    borderColor:  'rgba(0, 158, 73, .75)',
                     borderWidth: 1
                 }]
             },
@@ -182,8 +193,8 @@ function CreateProblemChart(labels, values)   {
             label: "Number of Incidents",
             axis: 'y',
             data: values,
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(255, 140, 0, 0.5)',
+            borderColor: 'rgba(232, 17, 35, 0.75)',
             borderWidth: 1
     }]};
     
