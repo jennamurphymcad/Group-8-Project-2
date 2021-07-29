@@ -1,17 +1,16 @@
-
+// Define the charts as global variables
 var myChart;
 var myBestChart;
 var myOtherChart;
 
+// Call the set up function
 setup();
 
 
-
+// Set up function run all code with data calls
 function setup() {
     d3.json("http://127.0.0.1:5000/data").then(function(data) {
-
-        
-
+       
         // Create initial dashboard view
         var neighborhood_list = data.Map_Data.map(d=>d[0]);
         var TS_initial_labels = data.N_CountbyYear["Minneapolis"][0];
@@ -21,20 +20,18 @@ function setup() {
         var FT_initial_labels = data.N_CountbyForceType["Minneapolis"][0];
         var FT_initial_values = data.N_CountbyForceType["Minneapolis"][1];
         
-        
         console.log(data.N_CountbyProblem["Minneapolis"]);
         
-
         myBestChart = CreateTimeSeries(TS_initial_labels, TS_initial_values);
         console.log(myBestChart.config.data.datasets.data);
         myOtherChart = CreateProblemChart(P_initial_labels,P_initial_values);
         myChart = CreateForceTypeChart(FT_initial_labels, FT_initial_values);
         
-        
+        // Select Divs containing select
         var innerContainer = document.querySelector('.well'),
-        // plotEl = innerContainer.querySelector('#bar'),
         userSelector = innerContainer.querySelector('#selDataset');
-
+       
+        // Function to append all neighborhoods as options for the dropdown
         function assignOptions(neighborhood, selector) {
             for (var i = 0; i < neighborhood.length;  i++) {
                 if (neighborhood[i] !== null) {
@@ -47,8 +44,10 @@ function setup() {
             }
         }
 
+        // Call menu creation function
         assignOptions(neighborhood_list, userSelector);
 
+        // Update charts
         function updatePlotly() {
 
             var dropdownMenu = d3.select("#selDataset");
@@ -56,8 +55,7 @@ function setup() {
             var dataset = dropdownMenu.property("value");
             // Push selection to console
             console.log(dataset);
-            
-            
+                     
             // Select new data for time series plot
             var labels = data.N_CountbyYear[dataset][0];
             var values = data.N_CountbyYear[dataset][1];
@@ -80,26 +78,16 @@ function setup() {
             // Destroy old chart per chart.js   
             myChart.destroy();
             // Call function to create new chart and pass new data
-            myChart = CreateForceTypeChart(FT_labels, FT_values);
-            
+            myChart = CreateForceTypeChart(FT_labels, FT_values);            
         };
 
+        // Update charts when dropdown menu changes
         d3.selectAll("#selDataset").on("change", updatePlotly);
-
-
-
-
-
+   
     })
-
-    
 }
 
-
-
-
-
-
+// Function to create Doughnut Chart
 function CreateForceTypeChart(labels, values) {
     var ctx = document.getElementById('myChart').getContext('2d');
     
@@ -160,7 +148,7 @@ function CreateForceTypeChart(labels, values) {
 }
 
 
-
+// Function to set up Incidents by Year Bar Chart
 function CreateTimeSeries(labels, values)   {
     var ctx = document.getElementById('myBestChart').getContext('2d');
     const config = {
@@ -194,6 +182,7 @@ function CreateTimeSeries(labels, values)   {
 
 }
 
+// Function to set up horizontal bar chart of top 10 problems use of force was used
 function CreateProblemChart(labels, values)   {
     var ctx = document.getElementById('myOtherChart').getContext('2d');
     
