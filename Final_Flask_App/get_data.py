@@ -6,16 +6,10 @@ from sqlalchemy import create_engine
 
 def get_data():
 
-    
-    
     url = "https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/Police_Use_of_Force/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"
-
-
 
     response = requests.get(url)
     response_json = response.json()
-
-
 
     new_dict = {}
     new_dict["Year"] = []
@@ -32,8 +26,6 @@ def get_data():
         
             for key in response_json["features"][index]['attributes']:
             
-            
-            
                 if key == 'ResponseDate':
                         d = datetime.datetime.fromtimestamp(a[key]/1000)
                         e = d.strftime('%Y-%m-%d')
@@ -45,17 +37,11 @@ def get_data():
                 else:
                     new_dict[key].append(a[key])
                     # new_dict["geometry"].append(b)
-        
-        
         else:
             pass
 
 
-    
-
     df = pd.DataFrame(new_dict)
-
-
 
 
     sqlite3.connect('MNPDUseofForce.sqlite')
